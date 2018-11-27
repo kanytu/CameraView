@@ -137,17 +137,7 @@ task sourcesJar(type: Jar) {
 }
 
 task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += project.files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    project.android.libraryVariants.all { variant ->
-        if (variant.name == 'release') {
-            classpath += files(variant.javaCompile.classpath)
-        }
-    }
-    exclude '**/BuildConfig.java'
-    exclude '**/R.java'
-    exclude '**/internal/**'
+    
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
