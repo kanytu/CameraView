@@ -32,7 +32,6 @@ import android.widget.FrameLayout;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -1033,17 +1032,6 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
         return mCameraController.getSessionType();
     }
 
-
-    /**
-     * Sets preview size. The {@link SizeSelector} will be invoked with the list of available
-     * size, and the first acceptable size will be accepted and passed to the internal engine.
-     * See the {@link SizeSelectors} class for handy utilities for creating selectors.
-     *
-     * @param selector a size selector
-     */
-    public void setPreviewSize(@NonNull SizeSelector selector) {
-        mCameraController.setPreviewSizeSelector(selector);
-    }
 
     /**
      * Sets picture capture size. The {@link SizeSelector} will be invoked with the list of available
