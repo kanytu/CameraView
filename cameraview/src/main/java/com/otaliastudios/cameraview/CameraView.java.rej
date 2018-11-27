@@ -1,0 +1,122 @@
+***************
+*** 114,146 ****
+          Audio audio = Audio.fromValue(a.getInteger(R.styleable.CameraView_cameraAudio, Audio.DEFAULT.value()));
+  
+          // Size selectors
+-         List<SizeSelector> constraints = new ArrayList<>(3);
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMinWidth)) {
+-             constraints.add(SizeSelectors.minWidth(a.getInteger(R.styleable.CameraView_cameraPictureSizeMinWidth, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMaxWidth)) {
+-             constraints.add(SizeSelectors.maxWidth(a.getInteger(R.styleable.CameraView_cameraPictureSizeMaxWidth, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMinHeight)) {
+-             constraints.add(SizeSelectors.minHeight(a.getInteger(R.styleable.CameraView_cameraPictureSizeMinHeight, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMaxHeight)) {
+-             constraints.add(SizeSelectors.maxHeight(a.getInteger(R.styleable.CameraView_cameraPictureSizeMaxHeight, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMinArea)) {
+-             constraints.add(SizeSelectors.minArea(a.getInteger(R.styleable.CameraView_cameraPictureSizeMinArea, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMaxArea)) {
+-             constraints.add(SizeSelectors.maxArea(a.getInteger(R.styleable.CameraView_cameraPictureSizeMaxArea, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeAspectRatio)) {
+              //noinspection ConstantConditions
+-             constraints.add(SizeSelectors.aspectRatio(AspectRatio.parse(a.getString(R.styleable.CameraView_cameraPictureSizeAspectRatio)), 0));
+          }
+-         if (a.getBoolean(R.styleable.CameraView_cameraPictureSizeSmallest, false)) constraints.add(SizeSelectors.smallest());
+-         if (a.getBoolean(R.styleable.CameraView_cameraPictureSizeBiggest, false)) constraints.add(SizeSelectors.biggest());
+-         SizeSelector selector = !constraints.isEmpty() ?
+-                 SizeSelectors.and(constraints.toArray(new SizeSelector[constraints.size()])) :
+                  SizeSelectors.biggest();
+  
+          // Gestures
+--- 115,182 ----
+          Audio audio = Audio.fromValue(a.getInteger(R.styleable.CameraView_cameraAudio, Audio.DEFAULT.value()));
+  
+          // Size selectors
++         List<SizeSelector> previewSizeSelectors = new ArrayList<>(3);
++         if (a.hasValue(R.styleable.CameraView_cameraPreviewSizeMinWidth)) {
++             previewSizeSelectors.add(SizeSelectors.minWidth(a.getInteger(R.styleable.CameraView_cameraPreviewSizeMinWidth, 0)));
++         }
++         if (a.hasValue(R.styleable.CameraView_cameraPreviewSizeMaxWidth)) {
++             previewSizeSelectors.add(SizeSelectors.maxWidth(a.getInteger(R.styleable.CameraView_cameraPreviewSizeMaxWidth, 0)));
++         }
++         if (a.hasValue(R.styleable.CameraView_cameraPreviewSizeMinHeight)) {
++             previewSizeSelectors.add(SizeSelectors.minHeight(a.getInteger(R.styleable.CameraView_cameraPreviewSizeMinHeight, 0)));
++         }
++         if (a.hasValue(R.styleable.CameraView_cameraPreviewSizeMaxHeight)) {
++             previewSizeSelectors.add(SizeSelectors.maxHeight(a.getInteger(R.styleable.CameraView_cameraPreviewSizeMaxHeight, 0)));
++         }
++         if (a.hasValue(R.styleable.CameraView_cameraPreviewSizeMinArea)) {
++             previewSizeSelectors.add(SizeSelectors.minArea(a.getInteger(R.styleable.CameraView_cameraPreviewSizeMinArea, 0)));
++         }
++         if (a.hasValue(R.styleable.CameraView_cameraPreviewSizeMaxArea)) {
++             previewSizeSelectors.add(SizeSelectors.maxArea(a.getInteger(R.styleable.CameraView_cameraPreviewSizeMaxArea, 0)));
++         }
++         if (a.hasValue(R.styleable.CameraView_cameraPreviewSizeAspectRatio)) {
++             //noinspection ConstantConditions
++             previewSizeSelectors.add(SizeSelectors.aspectRatio(AspectRatio.parse(a.getString(R.styleable.CameraView_cameraPreviewSizeAspectRatio)), 0));
++         }
++         if (a.getBoolean(R.styleable.CameraView_cameraPreviewSizeSmallest, false)) previewSizeSelectors.add(SizeSelectors.smallest());
++         if (a.getBoolean(R.styleable.CameraView_cameraPreviewSizeBiggest, false)) previewSizeSelectors.add(SizeSelectors.biggest());
++         SizeSelector previewSizeSelector = !previewSizeSelectors.isEmpty() ?
++                 SizeSelectors.and(previewSizeSelectors.toArray(new SizeSelector[previewSizeSelectors.size()])) :
++                 new SizeSelector() {
++                     @NonNull
++                     @Override
++                     public List<Size> select(@NonNull List<Size> source) {
++                         return Collections.emptyList();
++                     }
++                 };
++         
++         List<SizeSelector> pictureSizeSelectors = new ArrayList<>(3);
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMinWidth)) {
++             pictureSizeSelectors.add(SizeSelectors.minWidth(a.getInteger(R.styleable.CameraView_cameraPictureSizeMinWidth, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMaxWidth)) {
++             pictureSizeSelectors.add(SizeSelectors.maxWidth(a.getInteger(R.styleable.CameraView_cameraPictureSizeMaxWidth, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMinHeight)) {
++             pictureSizeSelectors.add(SizeSelectors.minHeight(a.getInteger(R.styleable.CameraView_cameraPictureSizeMinHeight, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMaxHeight)) {
++             pictureSizeSelectors.add(SizeSelectors.maxHeight(a.getInteger(R.styleable.CameraView_cameraPictureSizeMaxHeight, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMinArea)) {
++             pictureSizeSelectors.add(SizeSelectors.minArea(a.getInteger(R.styleable.CameraView_cameraPictureSizeMinArea, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeMaxArea)) {
++             pictureSizeSelectors.add(SizeSelectors.maxArea(a.getInteger(R.styleable.CameraView_cameraPictureSizeMaxArea, 0)));
+          }
+          if (a.hasValue(R.styleable.CameraView_cameraPictureSizeAspectRatio)) {
+              //noinspection ConstantConditions
++             pictureSizeSelectors.add(SizeSelectors.aspectRatio(AspectRatio.parse(a.getString(R.styleable.CameraView_cameraPictureSizeAspectRatio)), 0));
+          }
++         if (a.getBoolean(R.styleable.CameraView_cameraPictureSizeSmallest, false)) pictureSizeSelectors.add(SizeSelectors.smallest());
++         if (a.getBoolean(R.styleable.CameraView_cameraPictureSizeBiggest, false)) pictureSizeSelectors.add(SizeSelectors.biggest());
++         SizeSelector pictureSizeSelector = !pictureSizeSelectors.isEmpty() ?
++                 SizeSelectors.and(pictureSizeSelectors.toArray(new SizeSelector[pictureSizeSelectors.size()])) :
+                  SizeSelectors.biggest();
+  
+          // Gestures
+***************
+*** 186,192 ****
+          setGrid(grid);
+          setHdr(hdr);
+          setAudio(audio);
+-         setPictureSize(selector);
+  
+          // Apply gestures
+          mapGesture(Gesture.TAP, tapGesture);
+--- 222,229 ----
+          setGrid(grid);
+          setHdr(hdr);
+          setAudio(audio);
++         setPreviewSize(previewSizeSelector);
++         setPictureSize(pictureSizeSelector);
+  
+          // Apply gestures
+          mapGesture(Gesture.TAP, tapGesture);

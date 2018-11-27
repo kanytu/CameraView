@@ -53,7 +53,6 @@ abstract class CameraController implements
     protected CameraOptions mCameraOptions;
     protected Mapper mMapper;
     protected FrameManager mFrameManager;
-    protected SizeSelector mPreviewSizeSelector;
     protected SizeSelector mPictureSizeSelector;
     protected MediaRecorder mMediaRecorder;
     protected File mVideoFile;
@@ -275,12 +274,8 @@ abstract class CameraController implements
         mDeviceOrientation = deviceOrientation;
     }
 
-    final void setPreviewSizeSelector(SizeSelector previewSizeSelector) {
-        mPreviewSizeSelector = previewSizeSelector;
-    }
-
-    final void setPictureSizeSelector(SizeSelector pictureSizeSelector) {
-        mPictureSizeSelector = pictureSizeSelector;
+    final void setPictureSizeSelector(SizeSelector selector) {
+        mPictureSizeSelector = selector;
     }
 
     final void setVideoMaxSize(long videoMaxSizeBytes) {
@@ -398,10 +393,6 @@ abstract class CameraController implements
 
     final Audio getAudio() {
         return mAudio;
-    }
-
-    public SizeSelector getPreviewSizeSelector() {
-        return mPreviewSizeSelector;
     }
 
     final SizeSelector getPictureSizeSelector() {
